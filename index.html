@@ -83,7 +83,8 @@
         var itemPrice = parseFloat(itemPriceText.replace(/[^0-9.]/g, ''));
 
         if (!isNaN(itemPrice)) { // Controlla se il prezzo è un numero valido
-            total -= itemPrice; // Sottrai dal totale
+            // Sottrarre dal totale ma evitare che vada sotto zero
+            total = Math.max(total - itemPrice, 0); // Impedisce al totale di scendere sotto zero
             updateTotal();
         }
 
@@ -97,7 +98,7 @@
     }
 });
 
-     </script>
+    </script>
 
 
 </body>

@@ -56,7 +56,48 @@
 
 
     <script src="jquery-3.6.3.min.js"></script>
-    <script src="index.js"></script>
+    <script>
+        $(document).ready(function () {
+    var total = 0;
+
+    // Evento per aggiungere un prodotto al carrello
+    $('button').on('click', function () {
+        // Prendi lo span con il prezzo relativo al bottone cliccato
+        var priceText = $(this).siblings('span').text().trim(); // Seleziona lo span all'interno dello stesso div
+        var price = parseFloat(priceText.replace(/[^0-9.]/g, '')); // Estrai solo la parte numerica
+
+        if (!isNaN(price)) { // Controlla se il prezzo è un numero valido
+            total += price; // Aggiorna il totale
+            updateTotal();
+
+            // Aggiungi l'elemento alla lista con il bottone "delete"
+            $('#list').append('<div class="item"><span>' + price.toFixed(2) + ' CHF</span> <button class="delete">delete</button></div>');
+        } else {
+            alert("Errore: prezzo non valido");
+        }
+    });
+
+    // Event delegation per rimuovere un prodotto dalla lista
+    $('#list').on('click', 'button.delete', function () {
+        var itemPriceText = $(this).prev().text().trim();
+        var itemPrice = parseFloat(itemPriceText.replace(/[^0-9.]/g, ''));
+
+        if (!isNaN(itemPrice)) { // Controlla se il prezzo è un numero valido
+            total -= itemPrice; // Sottrai dal totale
+            updateTotal();
+        }
+
+        // Rimuovi l'elemento dalla lista
+        $(this).parent('.item').remove();
+    });
+
+    // Funzione per aggiornare il totale
+    function updateTotal() {
+        $('#total').text('Total: ' + total.toFixed(2) + ' CHF');
+    }
+});
+
+     </script>
 
 
 </body>
